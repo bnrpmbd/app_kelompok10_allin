@@ -105,7 +105,51 @@ def main():
     metode = st.selectbox("Pilih metode dekomposisi", ["Nilai Eigen & Vektor Eigen", "Diagonalisasi", "Dekomposisi LU", "Dekomposisi Cholesky", "Dekomposisi Doolittle", "Dekomposisi Crout"])
 
     if st.button("Dekomposisi"):
-        if matrix_input:
+        if metode == "Nilai Eigen & Vektor Eigen":
+            A = text_to_matrix(matrix_input)
+            st.write("Input Matrix:")
+            st.write(A)
+            st.header("Nilai Eigen & Vektor Eigen")
+            eigenvalues = find_eigenvalues(A)
+            eigenvectors = find_eigenvectors(A)
+            st.write("Eigenvalues:")
+            st.write(eigenvalues)
+            st.write("Eigenvectors:")
+            st.write(eigenvectors)
+
+        if metode == "Diagonalisasi":
+            A = text_to_matrix(matrix_input)
+            st.write("Input Matrix:")
+            st.write(A)
+            st.header("Diagonalisasi")
+            try:
+                P, D, P_inv = diagonalize(A)
+                st.write("P (Eigenvector Matrix):")
+                st.write(P)
+                st.write("P_inv (Inverse of P):")
+                st.write(P_inv)
+                st.write("D (Diagonal Matrix of Eigenvalues):")
+                st.write(D)
+            except np.linalg.LinAlgError as e:
+                st.write("Diagonalization failed:", e)
+
+        if metode == "Dekomposisi LU":
+            A = text_to_matrix(matrix_input)
+            st.write("Input Matrix:")
+            st.write(A)
+            st.header("Dekomposisi LU")
+            try:
+                P, L, U = lu_decomposition(A)
+                st.write("P (Permutation Matrix):")
+                st.write(P)
+                st.write("L (Lower Triangular Matrix):")
+                st.write(L)
+                st.write("U (Upper Triangular Matrix):")
+                st.write(U)
+                st.write("L x U:", L @ U)
+            except np.linalg.LinAlgError as e:
+                st.write("LU Decomposition failed:", e)
+        if metode == "Dekomposisi Cholesky":
             try:
                 A = text_to_matrix(matrix_input)
                 if A.shape[0] != A.shape[1]:
@@ -113,7 +157,7 @@ def main():
                 else:
                     st.write("Input Matrix:")
                     st.write(A)
-
+                    st.header("Dekomposisi Cholesky")
                     if not is_symmetric(A):
                         st.write("Matrix is not symmetric. Converting to symmetric matrix.")
                         A = make_symmetric(A)
@@ -124,74 +168,44 @@ def main():
 
                     st.write("Processed Matrix:")
                     st.write(A)
+                    L, L_T = cholesky_decomposition(A)
+                    st.write("L (Lower Triangular Matrix):")
+                    st.write(L)
+                    st.write("L.T (Transpose of L):")
+                    st.write(L_T)
+                    st.write("L x L.T:", L @ L_T)
+            except np.linalg.LinAlgError as e:
+                st.write("Cholesky Decomposition failed:", e)
+        
+        if metode == "Dekomposisi Doolittle":
+            A = text_to_matrix(matrix_input)
+            st.write("Input Matrix:")
+            st.write(A)
+            st.header("Dekomposisi Doolittle")
+            try:
+                L, U = doolittle_decomposition(A)
+                st.write("L (Lower Triangular Matrix):")
+                st.write(L)
+                st.write("U (Upper Triangular Matrix):")
+                st.write(U)
+                st.write("L x U:", L @ U)
+            except np.linalg.LinAlgError as e:
+                st.write("Doolittle Decomposition failed:", e)
 
-                    if metode == "Nilai Eigen & Vektor Eigen":
-                        eigenvalues = find_eigenvalues(A)
-                        eigenvectors = find_eigenvectors(A)
-                        st.write("Eigenvalues:")
-                        st.write(eigenvalues)
-                        st.write("Eigenvectors:")
-                        st.write(eigenvectors)
-
-                    if metode == "Diagonalisasi":
-                        try:
-                            P, D, P_inv = diagonalize(A)
-                            st.write("P (Eigenvector Matrix):")
-                            st.write(P)
-                            st.write("P_inv (Inverse of P):")
-                            st.write(P_inv)
-                            st.write("D (Diagonal Matrix of Eigenvalues):")
-                            st.write(D)
-                        except np.linalg.LinAlgError as e:
-                            st.write("Diagonalization failed:", e)
-
-                    if metode == "Dekomposisi LU":
-                        try:
-                            P, L, U = lu_decomposition(A)
-                            st.write("P (Permutation Matrix):")
-                            st.write(P)
-                            st.write("L (Lower Triangular Matrix):")
-                            st.write(L)
-                            st.write("U (Upper Triangular Matrix):")
-                            st.write(U)
-                            st.write("L x U:", L @ U)
-                        except np.linalg.LinAlgError as e:
-                            st.write("LU Decomposition failed:", e)
-
-                    if metode == "Dekomposisi Cholesky":
-                        try:
-                            L, L_T = cholesky_decomposition(A)
-                            st.write("L (Lower Triangular Matrix):")
-                            st.write(L)
-                            st.write("L.T (Transpose of L):")
-                            st.write(L_T)
-                            st.write("L x L.T:", L @ L_T)
-                        except np.linalg.LinAlgError as e:
-                            st.write("Cholesky Decomposition failed:", e)
-
-                    if metode == "Dekomposisi Doolittle":
-                        try:
-                            L, U = doolittle_decomposition(A)
-                            st.write("L (Lower Triangular Matrix):")
-                            st.write(L)
-                            st.write("U (Upper Triangular Matrix):")
-                            st.write(U)
-                            st.write("L x U:", L @ U)
-                        except np.linalg.LinAlgError as e:
-                            st.write("Doolittle Decomposition failed:", e)
-
-                    if metode == "Dekomposisi Crout":
-                        try:
-                            L, U = crout_decomposition(A)
-                            st.write("L (Lower Triangular Matrix):")
-                            st.write(L)
-                            st.write("U (Upper Triangular Matrix):")
-                            st.write(U)
-                            st.write("L x U:", L @ U)
-                        except np.linalg.LinAlgError as e:
-                            st.write("Crout Decomposition failed:", e)
-            except ValueError:
-                st.error("Invalid input format. Please enter a valid square matrix.")
+        if metode == "Dekomposisi Crout":
+            A = text_to_matrix(matrix_input)
+            st.write("Input Matrix:")
+            st.write(A)
+            st.header("Dekomposisi Crout")
+            try:
+                L, U = crout_decomposition(A)
+                st.write("L (Lower Triangular Matrix):")
+                st.write(L)
+                st.write("U (Upper Triangular Matrix):")
+                st.write(U)
+                st.write("L x U:", L @ U)
+            except np.linalg.LinAlgError as e:
+                st.write("Crout Decomposition failed:", e)
 
 # Memanggil fungsi utama yang berisi streamlit antarmuka
 if __name__ == "__main__":
