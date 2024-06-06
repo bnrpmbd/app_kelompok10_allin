@@ -102,9 +102,9 @@ def main():
     st.header("Selamat Datang di Kalkulator Matriks by Kelompok 10 Kelas B")
 
     matrix_input = st.text_area("Masukkan matriks Anda (dengan cara pisahkan elemen dengan spasi dan baris dengan baris baru/enter):", "1 -1 -9\n-1 3 -9\n1 -1 3")
-    metode = st.selectbox("Pilih metode dekomposisi", ["Nilai Eigen & Vektor Eigen", "Diagonalisasi", "Dekomposisi LU", "Dekomposisi Cholesky", "Dekomposisi Doolittle", "Dekomposisi Crout"])
+    metode = st.selectbox("Pilih Metode Matriks", ["Nilai Eigen & Vektor Eigen", "Diagonalisasi", "Dekomposisi LU", "Dekomposisi Cholesky", "Dekomposisi Doolittle", "Dekomposisi Crout"])
 
-    if st.button("Dekomposisi"):
+    if st.button("HASIL"):
         if metode == "Nilai Eigen & Vektor Eigen":
             A = text_to_matrix(matrix_input)
             st.write("Input Matrix:")
