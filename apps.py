@@ -112,9 +112,9 @@ def main():
             st.header("Nilai Eigen & Vektor Eigen")
             eigenvalues = find_eigenvalues(A)
             eigenvectors = find_eigenvectors(A)
-            st.write("Eigenvalues:")
+            st.write("Nilai Eigen:")
             st.write(eigenvalues)
-            st.write("Eigenvectors:")
+            st.write("Vektor Eigen:")
             st.write(eigenvectors)
 
         if metode == "Diagonalisasi":
@@ -124,7 +124,7 @@ def main():
             st.header("Diagonalisasi")
             try:
                 P, D, P_inv = diagonalize(A)
-                st.write("P (Eigenvector Matrix):")
+                st.write("P (Vektor Eigen Matrix):")
                 st.write(P)
                 st.write("P_inv (Inverse of P):")
                 st.write(P_inv)
