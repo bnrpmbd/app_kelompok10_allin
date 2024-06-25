@@ -2,22 +2,24 @@ import streamlit as st
 import numpy as np
 import scipy
 
+# Fungsi membuat matriks identitas
 def create_identity_matrix(size):
     return np.eye(size)
 
-def subtract_matrices(A, B):
-    return A - B
-
+# Fungsi mencari Determinan dari matriks
 def determinant(matrix):
     return np.linalg.det(matrix)
 
+# Fungsi mencari Nilai Eigen
 def find_eigenvalues(A):
     return np.linalg.eigvals(A)
 
+# Fungsi mencari Vektor Eigen
 def find_eigenvectors(A):
     _, eigenvectors = np.linalg.eig(A)
     return eigenvectors
 
+# Fungsi Diagonalisasi Matriks
 def diagonalize(A):
     eigenvalues, eigenvectors = np.linalg.eig(A)
     D = np.diag(eigenvalues)
@@ -25,16 +27,20 @@ def diagonalize(A):
     P_inv = np.linalg.inv(P)
     return P, D, P_inv
 
+# Fungsi dekomposisi A=LU (Gauss)
 def lu_decomposition(A):
     P, L, U = scipy.linalg.lu(A)
     return P, L, U
 
+# Fungsi mengecek apakah matriks yang dimasukkan simetris
 def is_symmetric(A):
     return (A == A.T).all()
 
+# Fungsi membuat matriks menjadi simetris
 def make_symmetric(A):
     return (A + A.T) / 2
 
+# Fungsi untuk mencari tahu apakah matriks tersebut bernilai positif
 def is_positive_definite(A):
     try:
         np.linalg.cholesky(A)
@@ -42,12 +48,14 @@ def is_positive_definite(A):
     except np.linalg.LinAlgError:
         return False
 
+# Fungsi membuat hasil positif
 def make_positive_definite(A):
     # Add a small positive value to diagonal elements
     min_eig = np.min(np.real(np.linalg.eigvals(A)))
     if min_eig <= 0:
         A += np.eye(A.shape[0]) * (1 - min_eig)
 
+# Fungsi dekomposisi Cholesky
 def cholesky_decomposition(A):
     try:
         L = np.linalg.cholesky(A)
@@ -149,6 +157,7 @@ def main():
                 st.write("L x U:", L @ U)
             except np.linalg.LinAlgError as e:
                 st.write("LU Decomposition failed:", e)
+
         if metode == "Dekomposisi Cholesky":
             try:
                 A = text_to_matrix(matrix_input)
